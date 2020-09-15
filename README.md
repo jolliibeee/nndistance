@@ -1,9 +1,16 @@
+https://github.com/optas/latent_3d_points/issues/21
+
 
     import tensorflow as tf
     print(tf.sysconfig.get_compile_flags(),'\n')
     print(tf.sysconfig.get_link_flags())
-    
-    
+
+Running this gave the error: NotFoundError: undefined symbol: _ZTIN10tensorflow8OpKernelE
+
+It seems to be essentially caused by my versions of CUDA and Tensorflow being newer than the one the author tested on (mine are 9.0 and 1.11.0), These helped me solve the problem: these answers, Tensorflow's guide, and this answer.
+
+I could not use the solutions given in the above articles directly because for some reason my system (Linux Ubuntu 16.04 LTS) would give the error "No such file or directory" for ${TF_CFLAGS[@]} and ${TF_LFLAGS[@]}. It needs the space afer-L and -I. Here's how I fixed it:
+
     ['-I/usr/local/lib/python2.7/dist-packages/tensorflow/include', '-I/usr/local/lib/python2.7/dist-packages/tensorflow/include/external/nsync/public', '-D_GLIBCXX_USE_CXX11_ABI=1'] 
 
     ['-L/usr/local/lib/python2.7/dist-packages/tensorflow', '-ltensorflow_framework']
